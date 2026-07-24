@@ -1,0 +1,10 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="640" fill="#0a0a0a"/>
+
+  <polygon points="0,640 0,335 183,361 366,350 549,323 731,347 914,372 1097,374 1280,350 1280,640" fill="#ededed" opacity="0.25"/>
+  <polygon points="0,640 0,405 160,345 320,370 480,381 640,347 800,395 960,364 1120,371 1280,398 1280,640" fill="#ededed" opacity="0.45"/>
+  <polygon points="0,640 0,434 142,399 284,395 427,387 569,436 711,447 853,447 996,405 1138,421 1280,459 1280,640" fill="#ededed" opacity="0.75"/>
+
+  <text x="80" y="150" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="72" font-weight="700" letter-spacing="2" fill="#ededed">WLPR</text>
+  <text x="82" y="190" font-family="Inter, -apple-system, sans-serif" font-size="22" fill="#8a8a8a">Minimal Wallpaper Generator</text>
+</svg>
