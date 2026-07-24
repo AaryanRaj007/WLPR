@@ -183,7 +183,7 @@ canvas {
 
 .pattern-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: var(--space-1);
 }
 
@@ -199,6 +199,10 @@ canvas {
 
 .pattern-swatch:hover {
   border-color: #3a3a3a;
+}
+
+.pattern-swatch[data-pattern="waves"] {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
 }
 
 .pattern-swatch[data-pattern="geometric"] {
