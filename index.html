@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WLPR — Minimal Wallpaper Generator</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <main class="stage">
+        <header class="brand">
+          <span class="brand-mark">WLPR</span>
+        </header>
+
+        <div class="previews">
+          <figure class="frame frame-desktop">
+            <figcaption>Desktop 4K</figcaption>
+            <div class="canvas-wrap">
+              <canvas id="preview-desktop" width="1280" height="720" role="img" aria-label="Desktop wallpaper live preview"></canvas>
+              <div class="overlay-clock">
+                <span class="overlay-date">Sunday, June 14</span>
+                <span class="overlay-time">09:41</span>
+              </div>
+            </div>
+          </figure>
+
+          <figure class="frame frame-phone">
+            <figcaption>iPhone</figcaption>
+            <div class="canvas-wrap">
+              <canvas id="preview-phone" width="360" height="780" role="img" aria-label="Phone wallpaper live preview"></canvas>
+              <div class="overlay-clock overlay-clock-sm">
+                <span class="overlay-date">Sun, Jun 14</span>
+                <span class="overlay-time">09:41</span>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </main>
+
+      <aside class="panel">
+        <section class="panel-group">
+          <h2 class="label">Pattern</h2>
+          <div class="pattern-grid" id="pattern-grid">
+            <button class="pattern-swatch is-selected" data-pattern="ridgeline" aria-pressed="true" aria-label="Ridgeline pattern"></button>
+            <button class="pattern-swatch" data-pattern="horizon" aria-pressed="false" aria-label="Horizon pattern"></button>
+            <button class="pattern-swatch" data-pattern="flowfield" aria-pressed="false" aria-label="Flow Field pattern"></button>
+            <button class="pattern-swatch" data-pattern="dunes" aria-pressed="false" aria-label="Dunes pattern"></button>
+          </div>
+        </section>
+
+        <section class="panel-group">
+          <h2 class="label">Palette</h2>
+          <div class="palette-grid" id="palette-grid">
+            <button class="palette-swatch is-selected" data-palette="mono" style="background:#1a1a1a" aria-pressed="true" aria-label="Mono palette"></button>
+            <button class="palette-swatch" data-palette="slate" style="background:#4a5a70" aria-pressed="false" aria-label="Slate palette"></button>
+            <button class="palette-swatch" data-palette="forest" style="background:#3a5f4f" aria-pressed="false" aria-label="Forest palette"></button>
+            <button class="palette-swatch" data-palette="amber" style="background:#c96f4a" aria-pressed="false" aria-label="Amber palette"></button>
+            <button class="palette-swatch" data-palette="violet" style="background:#7a5a8a" aria-pressed="false" aria-label="Violet palette"></button>
+            <button class="palette-swatch" data-palette="rust" style="background:#b0463c" aria-pressed="false" aria-label="Rust palette"></button>
+          </div>
+        </section>
+
+        <section class="panel-group panel-row">
+          <h2 class="label">Mode</h2>
+          <div class="segmented" role="group" aria-label="Light or dark mode">
+            <button class="segment is-selected" id="mode-dark" aria-pressed="true">Dark</button>
+            <button class="segment" id="mode-light" aria-pressed="false">Light</button>
+          </div>
+        </section>
+
+        <section class="panel-group panel-row">
+          <h2 class="label">Grain</h2>
+          <button class="switch" id="grain-toggle" role="switch" aria-checked="false" aria-label="Grain overlay">
+            <span class="switch-thumb"></span>
+          </button>
+        </section>
+
+        <button class="btn btn-shuffle" id="shuffle-btn">
+          <span class="icon-shuffle"></span> Shuffle
+        </button>
+
+        <section class="customize" id="customize">
+          <button class="customize-toggle" id="customize-toggle" aria-expanded="false" aria-controls="customize-body">
+            <span>Customize</span>
+            <span class="chevron"></span>
+          </button>
+          <div class="customize-body" id="customize-body" hidden>
+            <label class="field">
+              <span class="field-label">Layers</span>
+              <input type="range" min="2" max="8" value="4" data-param="layers" />
+              <span class="field-value">4</span>
+            </label>
+            <label class="field">
+              <span class="field-label">Roughness</span>
+              <input type="range" min="0" max="100" value="50" data-param="roughness" />
+              <span class="field-value">50</span>
+            </label>
+            <label class="field">
+              <span class="field-label">Seed</span>
+              <input type="text" class="seed-input" value="a1b2c3" spellcheck="false" />
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-group export-group">
+          <h2 class="label">Export</h2>
+          <select class="select" id="size-preset" aria-label="Export size preset">
+            <option value="3840x2160">Desktop 4K — 3840×2160</option>
+            <option value="2560x1440">Desktop 2K — 2560×1440</option>
+            <option value="1920x1080">Desktop 1080p — 1920×1080</option>
+            <option value="1290x2796">iPhone — 1290×2796</option>
+            <option value="match">Match my screen</option>
+          </select>
+          <button class="btn btn-download" id="download-btn">Download</button>
+        </section>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
