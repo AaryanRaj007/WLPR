@@ -3,56 +3,106 @@
 </p>
 
 <p align="center">
-  <img src="icon-mark-only.svg" alt="WLPR Logo" width="72" height="72" />
+  <a href="https://aaryanraj007.github.io/WLPR/">
+    <img src="icon-mark-only.svg" alt="WLPR Logo" width="80" height="80" />
+  </a>
 </p>
 
-# WLPR — Minimal Wallpaper Generator
+<h1 align="center">WLPR — Minimal Wallpaper Generator</h1>
 
-A small wallpaper generator I built because I wanted something minimal, procedural, and mine — not another site full of stock gradients. Pick a pattern, pick a palette, hit shuffle until something clicks, then download it in whatever resolution you need.
+<p align="center">
+  <b>A procedural, minimal, browser-based wallpaper generator built with HTML5 Canvas 2D & TypeScript.</b>
+</p>
 
-Everything renders live in the browser with Canvas. No accounts, no server, no tracking. Every wallpaper you make has a seed baked into the URL, so if you land on one you like you can just bookmark or share the link and get the exact same image back.
+<p align="center">
+  <a href="https://aaryanraj007.github.io/WLPR/"><img src="https://img.shields.io/badge/Live_Demo-aaryanraj007.github.io%2FWLPR-38bdf8?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo" /></a>
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/HTML5_Canvas-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5 Canvas" />
+</p>
 
-Live at: https://aaryanraj007.github.io/WLPR/
+<br/>
 
-## What it does
+<p align="center">
+  <img src="demo.gif" alt="WLPR Demo Video" width="100%" />
+</p>
 
-- 7 procedural patterns: Ridgeline (mountain silhouettes), Horizon (banded sunset gradients), Flow Field (generative line art), Dunes (sand waves), Topographic Line Art (contour elevation maps), Connected Squares (corner-to-corner lattice), and Curved Waves (minimal lower-horizon curves)
-- 7 curated color palettes (Mono, Cream, Slate, Forest, Amber, Violet, Rust) built on OKLCH
-- Universal **Invert** toggle switch to flip background and element colors instantly across every pattern
-- A dark/light toggle that changes the mood of the wallpaper, not just the site
-- A "Customize" panel with per-pattern sliders (layer count, roughness/warp/density depending on the pattern) plus a visible seed you can copy or type back in
-- Optional grain overlay for texture
-- Shuffle regenerates the shape/seed while keeping your palette and pattern choice
-- Export at a bunch of common sizes (4K, 2K, 1080p, iPhone, or match your own screen), rendered off the main thread in a Web Worker so the UI never freezes
-- Your last session is remembered (localStorage) and also encoded into the URL hash, so refreshing or sharing a link both just work
+---
 
-## Stack
+## ✨ Overview
 
-Vanilla TypeScript + Vite. No UI framework — the whole thing is one render loop drawing onto a couple of canvases, so there's no reason to pay for a framework's overhead. Color math runs through [culori](https://culorijs.org/) for OKLCH, noise comes from [simplex-noise](https://github.com/jwagner/simplex-noise.js), and randomness is a seeded mulberry32 PRNG so everything is reproducible from a seed string.
+**WLPR** is a procedural wallpaper engine designed for users who love clean, dark-mode, and minimalist aesthetics. Instead of downloading static stock photos or generic gradients, WLPR generates unique mathematical and geometric wallpapers directly inside your browser.
 
-## Running it locally
+Every wallpaper is 100% deterministic — driven by a seeded pseudo-random number generator (PRNG). If you generate a wallpaper you love, the exact configuration and seed are encoded directly into the URL hash so you can bookmark, save, or share it anytime.
+
+👉 **Try it live**: [https://aaryanraj007.github.io/WLPR/](https://aaryanraj007.github.io/WLPR/)
+
+---
+
+## 🎨 Features & Patterns
+
+### 🌌 8 Procedural Pattern Engines
+- **Constellation Mesh**: Minimalist vector dot nodes connected by high-density laser line networks.
+- **Curved Waves**: Sleek lower-horizon sweeping single-color wave curves.
+- **Connected Squares**: Ultra-clean corner-to-corner square lattice geometry.
+- **Topographic Line Art**: Organic contour elevation maps.
+- **Ridgeline**: Layered mountain silhouette horizons.
+- **Horizon**: Banded sunset gradients.
+- **Dunes**: Soft, warped desert sand dunes.
+- **Flow Field**: Curled vector flow lines.
+
+### 🌈 OKLCH Color Engine & Invert Mode
+- **7 Curated Palettes**: `Mono`, `Cream`, `Slate`, `Forest`, `Amber`, `Violet`, and `Rust`.
+- **Soft Cream Palette**: Dreamy warm vanilla, oatmeal, and latte tones without harsh darks.
+- **Universal Invert Toggle**: Reverses background and element colors instantly across every pattern.
+- **Dark / Light Mode**: Changes the entire mood of the generated artwork.
+
+### ⚡ Technical Highlights
+- **Zero-Lag Web Worker Exports**: Renders high-resolution 4K (3840×2160), 2K, 1080p, and Mobile (1290×2796) wallpapers off the main UI thread.
+- **Mobile First Viewport**: Responsive single-screen layout (`100dvh`) with zero vertical scrolling on mobile devices.
+- **Url & Local Storage Persistence**: Remembers your active pattern, seed, sliders, and color settings.
+
+---
+
+## 🛠️ Stack & Architecture
+
+| Technology | Usage |
+| :--- | :--- |
+| **Language** | Vanilla TypeScript (`strict` mode) |
+| **Bundler** | Vite 6 |
+| **Graphics** | HTML5 Canvas 2D API & Web Workers |
+| **Color Math** | OKLCH color space via [culori](https://culorijs.org/) |
+| **Procedural Noise** | 2D Simplex Noise via [simplex-noise](https://github.com/jwagner/simplex-noise.js) |
+| **PRNG** | Seeded Mulberry32 random number generator |
+
+---
+
+## 💻 Running Locally
+
+Clone the repository and start the Vite local development server:
 
 ```bash
+# Clone the repository
+git clone https://github.com/AaryanRaj007/WLPR.git
+cd WLPR
+
+# Install dependencies
 npm install
+
+# Start local dev server
 npm run dev
 ```
 
-That starts Vite on localhost. Build for production with:
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+To build the production static bundle:
 
 ```bash
 npm run build
 ```
 
-Output goes to `dist/`, which is a fully static folder — you can host it anywhere.
+---
 
-## Deployment
+## 📄 License
 
-This repo deploys itself to GitHub Pages via the workflow in `.github/workflows/deploy.yml` — push to `main` and it builds and publishes automatically. If you're forking this: go to the repo's Settings → Pages and set the source to "GitHub Actions" once, and it'll take care of itself after that.
-
-## Why it looks like this
-
-Loosely inspired by [WLLPR](https://bypedroneres.github.io/wllpr-website/), a native wallpaper app with a similar dark-minimal aesthetic. That one's a downloadable desktop app though — this is the web version I wished existed, built from scratch with its own pattern engine.
-
-## Roadmap-ish
-
-Things I might add later: more patterns (contour lines, low-poly, dot fields), saved custom palettes, and eventually wrapping this as an Android app with Capacitor so it can save straight to your gallery.
+Distributed under the MIT License. Built with ❤️ by [AaryanRaj007](https://github.com/AaryanRaj007).

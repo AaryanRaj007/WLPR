@@ -6,8 +6,18 @@ import { dunes } from './dunes';
 import { lineart } from './lineart';
 import { geometric } from './geometric';
 import { waves } from './waves';
+import { constellation } from './constellation';
 
-export const patternList: Pattern[] = [waves, geometric, lineart, ridgeline, horizon, flowfield, dunes];
+export const patternList: Pattern[] = [
+  constellation,
+  waves,
+  geometric,
+  lineart,
+  ridgeline,
+  horizon,
+  flowfield,
+  dunes,
+];
 
 export const patterns: Record<string, Pattern> = Object.fromEntries(patternList.map((p) => [p.id, p]));
 

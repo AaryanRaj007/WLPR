@@ -183,7 +183,7 @@ canvas {
 
 .pattern-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-1);
 }
 
@@ -199,6 +199,10 @@ canvas {
 
 .pattern-swatch:hover {
   border-color: #3a3a3a;
+}
+
+.pattern-swatch[data-pattern="constellation"] {
+  background: radial-gradient(circle at 50% 50%, #38bdf8 0%, #0f172a 70%, #020617 100%);
 }
 
 .pattern-swatch[data-pattern="waves"] {
