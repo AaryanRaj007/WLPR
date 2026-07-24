@@ -4,8 +4,9 @@ import { horizon } from './horizon';
 import { flowfield } from './flowfield';
 import { dunes } from './dunes';
 import { lineart } from './lineart';
+import { geometric } from './geometric';
 
-export const patternList: Pattern[] = [lineart, ridgeline, horizon, flowfield, dunes];
+export const patternList: Pattern[] = [geometric, lineart, ridgeline, horizon, flowfield, dunes];
 
 export const patterns: Record<string, Pattern> = Object.fromEntries(patternList.map((p) => [p.id, p]));
 
