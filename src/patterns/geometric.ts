@@ -3,13 +3,13 @@ import { hexToRgba } from '../color';
 
 export const geometric: Pattern = {
   id: 'geometric',
-  label: 'Geometric Minimal',
-  defaultParams: { layers: 5, roughness: 40 },
-  paramLabels: { layers: 'Shapes', roughness: 'Rotation' },
+  label: 'Connected Squares',
+  defaultParams: { layers: 4, roughness: 45 },
+  paramLabels: { layers: 'Grid Size', roughness: 'Rotation' },
 
-  draw(ctx, width, height, params, rng, colors) {
-    const shapeCount = Math.max(3, Math.min(10, Math.round(params.layers)));
-    const rotationAngle = (params.roughness / 100) * Math.PI * 0.5;
+  draw(ctx, width, height, params, _rng, colors) {
+    const gridDensity = Math.max(3, Math.min(12, Math.round(params.layers * 1.4)));
+    const baseAngle = ((params.roughness / 100) * Math.PI) / 2; // 0 to 90 degrees
 
     // Background gradient
     const bg = ctx.createLinearGradient(0, 0, width, height);
@@ -18,83 +18,74 @@ export const geometric: Pattern = {
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, width, height);
 
+    // Calculate square cell size so corners connect cleanly across the canvas
+    const size = Math.max(width, height) / gridDensity;
+    const stepX = size;
+    const stepY = size;
+
+    const cols = Math.ceil(width / stepX) + 4;
+    const rows = Math.ceil(height / stepY) + 4;
+    const startX = -size * 2;
+    const startY = -size * 2;
+
+    const strokeColor = colors.mode === 'dark' ? '#ffffff' : '#0f172a';
+    const accentColor = colors.accent;
+
     ctx.save();
-    // Center origin for composition
-    const centerX = width * 0.5;
-    const centerY = height * 0.5;
 
-    // 1. Draw central glowing sun / concentric circles
-    const baseRadius = Math.min(width, height) * 0.22;
-    for (let r = 3; r >= 1; r--) {
-      const radius = baseRadius * (r / 3);
-      ctx.beginPath();
-      ctx.arc(centerX + (rng() - 0.5) * 80, centerY + (rng() - 0.5) * 60, radius, 0, Math.PI * 2);
-      ctx.fillStyle = hexToRgba(colors.layers[r % colors.layers.length] || colors.accent, 0.25 + r * 0.15);
-      ctx.fill();
-    }
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        // Position each cell center so corners touch
+        const cx = startX + c * stepX;
+        const cy = startY + r * stepY;
 
-    // 2. Draw overlapping geometric polygons / diagonal bands
-    for (let i = 0; i < shapeCount; i++) {
-      ctx.save();
-      const x = width * (0.2 + rng() * 0.6);
-      const y = height * (0.2 + rng() * 0.6);
-      const size = Math.min(width, height) * (0.15 + rng() * 0.25);
-      const angle = (rng() - 0.5) * rotationAngle + (i * Math.PI) / 6;
+        ctx.save();
+        ctx.translate(cx, cy);
 
-      ctx.translate(x, y);
-      ctx.rotate(angle);
+        // Rotation based on position and user slider
+        const distFromCenter = Math.hypot(cx - width / 2, cy - height / 2) / Math.max(width, height);
+        const rotation = baseAngle + distFromCenter * 0.4;
+        ctx.rotate(rotation);
 
-      const color = colors.layers[i % colors.layers.length] || colors.accent;
-      ctx.fillStyle = hexToRgba(color, 0.35 + (i / shapeCount) * 0.4);
-      ctx.strokeStyle = hexToRgba(colors.accent, 0.7);
-      ctx.lineWidth = 2;
+        const colorIndex = (r + c) % colors.layers.length;
+        const layerColor = colors.layers[colorIndex] || strokeColor;
 
-      const shapeType = i % 3;
-      if (shapeType === 0) {
-        // Rotated Rectangle / Band
-        ctx.fillRect(-size * 0.5, -size * 0.25, size, size * 0.5);
-        ctx.strokeRect(-size * 0.5, -size * 0.25, size, size * 0.5);
-      } else if (shapeType === 1) {
-        // Triangle
-        ctx.beginPath();
-        ctx.moveTo(0, -size * 0.5);
-        ctx.lineTo(size * 0.5, size * 0.5);
-        ctx.lineTo(-size * 0.5, size * 0.5);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      } else {
-        // Arch / Semi-Circle
-        ctx.beginPath();
-        ctx.arc(0, 0, size * 0.4, 0, Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        // Draw outer square
+        ctx.strokeStyle = hexToRgba(layerColor, 0.75);
+        ctx.lineWidth = (r + c) % 3 === 0 ? 2.5 : 1.2;
+        ctx.strokeRect(-size * 0.45, -size * 0.45, size * 0.9, size * 0.9);
+
+        // Fill subtle color in alternating squares
+        if ((r + c) % 2 === 0) {
+          ctx.fillStyle = hexToRgba(layerColor, 0.12);
+          ctx.fillRect(-size * 0.45, -size * 0.45, size * 0.9, size * 0.9);
+        }
+
+        // Draw inner concentric connected square
+        const innerSize = size * 0.55;
+        ctx.strokeStyle = hexToRgba(accentColor, 0.6);
+        ctx.lineWidth = 1.0;
+        ctx.rotate(Math.PI / 4); // 45 degree offset for inner diamond touching outer corners
+        ctx.strokeRect(-innerSize * 0.45, -innerSize * 0.45, innerSize * 0.9, innerSize * 0.9);
+
+        // Draw tiny corner connection dot at vertices
+        ctx.fillStyle = accentColor;
+        const cornerOffset = size * 0.45;
+        const corners = [
+          [-cornerOffset, -cornerOffset],
+          [cornerOffset, -cornerOffset],
+          [cornerOffset, cornerOffset],
+          [-cornerOffset, cornerOffset],
+        ];
+
+        for (const [kx, ky] of corners) {
+          ctx.beginPath();
+          ctx.arc(kx, ky, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
       }
-
-      ctx.restore();
-    }
-
-    // 3. Draw fine geometric accent vector lines
-    const lineCount = 4;
-    ctx.strokeStyle = hexToRgba(colors.accent, 0.5);
-    ctx.lineWidth = 1.5;
-    for (let l = 0; l < lineCount; l++) {
-      const startX = width * (0.1 + rng() * 0.8);
-      const startY = height * (0.1 + rng() * 0.8);
-      const endX = startX + (rng() - 0.5) * width * 0.4;
-      const endY = startY + (rng() - 0.5) * height * 0.4;
-
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(endX, endY);
-      ctx.stroke();
-
-      // Accent dot at end of line
-      ctx.beginPath();
-      ctx.arc(endX, endY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = colors.accent;
-      ctx.fill();
     }
 
     ctx.restore();
