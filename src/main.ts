@@ -75,6 +75,14 @@ grainToggle.addEventListener('click', () => {
   renderAll();
 });
 
+const invertToggle = document.getElementById('invert-toggle')!;
+invertToggle.addEventListener('click', () => {
+  const on = invertToggle.getAttribute('aria-checked') === 'true';
+  invertToggle.setAttribute('aria-checked', String(!on));
+  state.invert = !on;
+  renderAll();
+});
+
 const customizeToggle = document.getElementById('customize-toggle')!;
 const customizeBody = document.getElementById('customize-body')!;
 customizeToggle.addEventListener('click', () => {
@@ -107,6 +115,7 @@ function sanitize(restored: Partial<PersistedState> | null): Partial<PersistedSt
   if (typeof restored.layers === 'number' && !Number.isNaN(restored.layers)) clean.layers = restored.layers;
   if (typeof restored.roughness === 'number' && !Number.isNaN(restored.roughness)) clean.roughness = restored.roughness;
   if (typeof restored.grain === 'boolean') clean.grain = restored.grain;
+  if (typeof restored.invert === 'boolean') clean.invert = restored.invert;
   return clean;
 }
 
@@ -127,12 +136,13 @@ const state = {
     roughness: restored.roughness ?? initialPattern.defaultParams.roughness,
   } as PatternParams,
   grain: restored.grain ?? false,
+  invert: restored.invert ?? false,
 };
 
 function renderAll() {
   const pattern = patterns[state.patternId];
   if (!pattern) return;
-  const colors = getPatternColors(state.paletteId, Math.round(state.params.layers), state.mode);
+  const colors = getPatternColors(state.paletteId, Math.round(state.params.layers), state.mode, state.invert);
   renderToCanvas(desktopCanvas, pattern, state.seed, state.params, colors, state.grain);
   renderToCanvas(phoneCanvas, pattern, state.seed, state.params, colors, state.grain);
 
@@ -144,6 +154,7 @@ function renderAll() {
     layers: state.params.layers,
     roughness: state.params.roughness,
     grain: state.grain,
+    invert: state.invert,
   };
   writeHash(persisted);
   saveToStorage(persisted);
@@ -212,6 +223,7 @@ if (state.mode === 'light') {
   setMode(modeDark, modeLight);
 }
 grainToggle.setAttribute('aria-checked', String(state.grain));
+invertToggle.setAttribute('aria-checked', String(state.invert));
 setFieldUi(initialPattern);
 
 renderAll();
@@ -239,7 +251,7 @@ downloadBtn.addEventListener('click', async () => {
   if (!pattern) return;
 
   const { width, height } = resolveExportSize();
-  const colors = getPatternColors(state.paletteId, Math.round(state.params.layers), state.mode);
+  const colors = getPatternColors(state.paletteId, Math.round(state.params.layers), state.mode, state.invert);
   const originalLabel = downloadBtn.textContent;
   downloadBtn.disabled = true;
   downloadBtn.textContent = 'Exporting…';

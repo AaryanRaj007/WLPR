@@ -10,15 +10,28 @@ export interface PatternColors {
   layers: string[];
   accent: string;
   mode: Mode;
+  invert?: boolean;
 }
 
-export function getPatternColors(paletteId: string, layerCount: number, mode: Mode): PatternColors {
+export function getPatternColors(
+  paletteId: string,
+  layerCount: number,
+  mode: Mode,
+  invert: boolean = false,
+): PatternColors {
   const palette = palettes.find((p) => p.id === paletteId) ?? palettes[0];
-  const ramp = toneRamp(palette.hue, palette.chroma, 2 + layerCount, mode);
+  const totalStops = 2 + layerCount;
+  let ramp = toneRamp(palette.hue, palette.chroma, totalStops, mode);
+
+  if (invert) {
+    ramp = [...ramp].reverse();
+  }
+
   return {
     background: [ramp[0], ramp[1]],
     layers: ramp.slice(2),
     accent: accentColor(palette.hue, palette.chroma, mode),
     mode,
+    invert,
   };
 }

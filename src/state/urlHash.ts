@@ -6,6 +6,7 @@ export interface PersistedState {
   layers: number;
   roughness: number;
   grain: boolean;
+  invert: boolean;
 }
 
 export function encodeState(s: PersistedState): string {
@@ -17,6 +18,7 @@ export function encodeState(s: PersistedState): string {
     l: String(s.layers),
     r: String(s.roughness),
     g: s.grain ? '1' : '0',
+    inv: s.invert ? '1' : '0',
   });
   return params.toString();
 }
@@ -38,6 +40,7 @@ export function decodeHash(hash: string): Partial<PersistedState> | null {
   if (params.has('l')) result.layers = Number(params.get('l'));
   if (params.has('r')) result.roughness = Number(params.get('r'));
   if (params.has('g')) result.grain = params.get('g') === '1';
+  if (params.has('inv')) result.invert = params.get('inv') === '1';
   return result;
 }
 
