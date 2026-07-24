@@ -55,12 +55,13 @@
         <section class="panel-group">
           <h2 class="label">Palette</h2>
           <div class="palette-grid" id="palette-grid">
-            <button class="palette-swatch is-selected" data-palette="mono" style="background:#1a1a1a" aria-pressed="true" aria-label="Mono palette"></button>
-            <button class="palette-swatch" data-palette="slate" style="background:#4a5a70" aria-pressed="false" aria-label="Slate palette"></button>
-            <button class="palette-swatch" data-palette="forest" style="background:#3a5f4f" aria-pressed="false" aria-label="Forest palette"></button>
-            <button class="palette-swatch" data-palette="amber" style="background:#c96f4a" aria-pressed="false" aria-label="Amber palette"></button>
-            <button class="palette-swatch" data-palette="violet" style="background:#7a5a8a" aria-pressed="false" aria-label="Violet palette"></button>
-            <button class="palette-swatch" data-palette="rust" style="background:#b0463c" aria-pressed="false" aria-label="Rust palette"></button>
+            <button class="palette-swatch is-selected" data-palette="mono" style="background:#1a1a1a" aria-pressed="true" aria-label="Mono palette" title="Mono"></button>
+            <button class="palette-swatch" data-palette="cream" style="background:#f5efe6" aria-pressed="false" aria-label="Cream palette" title="Cream"></button>
+            <button class="palette-swatch" data-palette="slate" style="background:#4a5a70" aria-pressed="false" aria-label="Slate palette" title="Slate"></button>
+            <button class="palette-swatch" data-palette="forest" style="background:#3a5f4f" aria-pressed="false" aria-label="Forest palette" title="Forest"></button>
+            <button class="palette-swatch" data-palette="amber" style="background:#c96f4a" aria-pressed="false" aria-label="Amber palette" title="Amber"></button>
+            <button class="palette-swatch" data-palette="violet" style="background:#7a5a8a" aria-pressed="false" aria-label="Violet palette" title="Violet"></button>
+            <button class="palette-swatch" data-palette="rust" style="background:#b0463c" aria-pressed="false" aria-label="Rust palette" title="Rust"></button>
           </div>
         </section>
 
@@ -75,6 +76,13 @@
         <section class="panel-group panel-row">
           <h2 class="label">Grain</h2>
           <button class="switch" id="grain-toggle" role="switch" aria-checked="false" aria-label="Grain overlay">
+            <span class="switch-thumb"></span>
+          </button>
+        </section>
+
+        <section class="panel-group panel-row">
+          <h2 class="label">Invert</h2>
+          <button class="switch" id="invert-toggle" role="switch" aria-checked="false" aria-label="Invert colors">
             <span class="switch-thumb"></span>
           </button>
         </section>
