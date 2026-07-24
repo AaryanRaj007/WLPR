@@ -1,58 +1,47 @@
 import { createNoise2D } from 'simplex-noise';
 import type { Pattern } from './types';
+import { hexToRgba } from '../color';
 
 export const waves: Pattern = {
   id: 'waves',
   label: 'Curved Waves',
-  defaultParams: { layers: 5, roughness: 45 },
-  paramLabels: { layers: 'Line Density', roughness: 'Curvature' },
+  defaultParams: { layers: 4, roughness: 50 },
+  paramLabels: { layers: 'Line Count', roughness: 'Wave Height' },
 
   draw(ctx, width, height, params, rng, colors) {
     const noise2D = createNoise2D(rng);
-    const lineCount = Math.max(12, Math.min(70, Math.round(params.layers * 8)));
-    const curvature = 0.4 + (Math.max(0, Math.min(100, params.roughness)) / 100) * 2.2;
+    const count = Math.max(3, Math.min(10, Math.round(params.layers)));
+    const waveHeight = (params.roughness / 100) * height * 0.25;
 
-    // Background gradient
-    const bg = ctx.createLinearGradient(0, 0, width, height);
+    // Clean background
+    const bg = ctx.createLinearGradient(0, 0, 0, height);
     bg.addColorStop(0, colors.background[0]);
     bg.addColorStop(1, colors.background[1]);
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, width, height);
 
-    const stepY = (height * 1.1) / (lineCount + 1);
-    const startY = -height * 0.05;
-    const samples = 160;
+    // Single unified stroke color based on accent/theme
+    const strokeColor = colors.accent || (colors.mode === 'dark' ? '#38bdf8' : '#0284c7');
+
+    // Confined strictly to lower portion of the screen (bottom ~35%)
+    const baseY = height * 0.72;
+    const samples = 140;
     const stepX = width / samples;
 
-    const accentColor = colors.accent;
-    const mainStroke = colors.mode === 'dark' ? '#ffffff' : '#0f172a';
-
-    // Draw multiple smooth thin curved lines flowing left to right
-    for (let i = 1; i <= lineCount; i++) {
-      const baseY = startY + i * stepY;
-      const isAccent = i % 4 === 0;
-      const colorIndex = i % colors.layers.length;
-      const strokeColor = isAccent ? accentColor : (colors.layers[colorIndex] || mainStroke);
+    for (let i = 0; i < count; i++) {
+      const lineYOffset = (i - count / 2) * 18;
+      const freq = 0.0018 + (i % 3) * 0.0004;
+      const phase = i * 0.45;
 
       ctx.beginPath();
-      ctx.lineWidth = isAccent ? 2.2 : 1.2;
-      ctx.strokeStyle = strokeColor;
-      ctx.globalAlpha = isAccent ? 0.85 : 0.4 + (i / lineCount) * 0.35;
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = hexToRgba(strokeColor, 0.75 + (i / count) * 0.25);
 
       for (let s = 0; s <= samples; s++) {
         const x = s * stepX;
-        const progress = s / samples; // 0 to 1
-
-        // Smooth wave modulation combining sine harmonic waves + noise
-        const freq1 = 0.0015;
-        const freq2 = 0.003;
-        const wave1 = Math.sin(x * freq1 + i * 0.25) * height * 0.08 * curvature;
-        const wave2 = Math.cos(x * freq2 - i * 0.15) * height * 0.04 * curvature;
-        const noiseVal = noise2D(x * 0.0008, baseY * 0.0008) * height * 0.06 * curvature;
-
-        // Envelope shape to pinch waves slightly at edges for aesthetic look
-        const envelope = Math.sin(progress * Math.PI);
-        const y = baseY + (wave1 + wave2 + noiseVal) * envelope;
+        const sineWave = Math.sin(x * freq + phase) * waveHeight * 0.5;
+        const noiseWave = noise2D(x * 0.001 + i * 10, i * 20) * waveHeight * 0.5;
+        const y = baseY + lineYOffset + sineWave + noiseWave;
 
         if (s === 0) {
           ctx.moveTo(x, y);
@@ -62,7 +51,5 @@ export const waves: Pattern = {
       }
       ctx.stroke();
     }
-
-    ctx.globalAlpha = 1.0;
   },
 };
