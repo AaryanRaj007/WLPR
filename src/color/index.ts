@@ -21,7 +21,7 @@ export function getPatternColors(
 ): PatternColors {
   const palette = palettes.find((p) => p.id === paletteId) ?? palettes[0];
   const totalStops = 2 + layerCount;
-  let ramp = toneRamp(palette.hue, palette.chroma, totalStops, mode);
+  let ramp = toneRamp(palette.hue, palette.chroma, totalStops, mode, palette.lightnessRange);
 
   if (invert) {
     ramp = [...ramp].reverse();
@@ -30,7 +30,7 @@ export function getPatternColors(
   return {
     background: [ramp[0], ramp[1]],
     layers: ramp.slice(2),
-    accent: accentColor(palette.hue, palette.chroma, mode),
+    accent: accentColor(palette.hue, palette.chroma, mode, palette.lightnessRange),
     mode,
     invert,
   };
